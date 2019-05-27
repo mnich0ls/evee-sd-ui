@@ -26,21 +26,18 @@ import EventCard from './EventCard.vue'
 
 export default {
   name: 'EventsContainer',
+  data: () => ({
+    events: {}
+  }),
   components: {
     EventCard
   },
-  filters:{
-    formatDateHeading(eventsHeadingDate){
-      return moment(eventsHeadingDate).format('MMMM D, YYYY')
-    }
-  },
-  beforeCreate(){
+  created(){
     var axios = window.axios; // Stops ESlint warning - I defined on window via main.js
-    axios.get('https://evee-sd.firebaseio.com/scraped_events.json', {
-      params:{
-        auth: "TMe7oNMbWHLHcN45t2uYcpltEQCAeHCrKeh8V7Xn"
-      }
-    }).then(events=>{
+    axios.get('http://ec2-18-144-1-16.us-west-1.compute.amazonaws.com:3000/api/v1/events').then(payload=>{
+
+      let events = payload.data.response;
+
       let events_GroupedByDate_Obj = {}
       
       let mapDatesToObj = (e)=>{
@@ -50,14 +47,14 @@ export default {
         events_GroupedByDate_Obj[e.start_date].push(e)
       }
       
-      events.data.forEach(e=>{
+      events.forEach(e=>{
         if(!moment(e.start_date).isBefore(moment().format('YYYY-MM-DD'))){ // Don't show any start_dates that already have passed
           mapDatesToObj(e);
         }
         else {
           // Check if the events with start_dates that have already passed have active / on-going end_dates
-          if(e.end_date !== 0){
-            if(e.end_date === 'ongoing' || moment(e.end_date).isAfter(moment().format('YYYY-MM-DD'))){
+          if(e.end_date !== 0 || e.end_date !== e.start_date){
+            if(moment(e.end_date).isAfter(moment().format('YYYY-MM-DD'))){
               e.start_date = moment().format('YYYY-MM-DD'); // Set the start_date for today
               mapDatesToObj(e);
             }
@@ -69,13 +66,12 @@ export default {
       Object.keys(events_GroupedByDate_Obj).sort().forEach(function(key) {
         events_OrderedByDate_Obj[key] = events_GroupedByDate_Obj[key]
       });
-      this.events = events_OrderedByDate_Obj
-    })
 
-  },
-  data: () => ({
-    events: {},
-  })
+      this.events = events_OrderedByDate_Obj
+
+    });
+
+  }
 }
 </script>
 

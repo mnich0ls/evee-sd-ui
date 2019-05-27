@@ -9,6 +9,17 @@ import '@fortawesome/fontawesome-free/css/all.min.css'
 import axios from 'axios'
 window.axios = axios
 
+
+import moment from 'moment'
+
+Vue.mixin({
+  filters:{
+    formatDateHeading(eventsHeadingDate){
+      return moment(eventsHeadingDate).format('MMMM D, YYYY')
+    }
+  }
+});
+
 Vue.config.productionTip = false
 
 new Vue({
