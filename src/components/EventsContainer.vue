@@ -34,7 +34,7 @@ export default {
   },
   created(){
     var axios = window.axios; // Stops ESlint warning - I defined on window via main.js
-    axios.get('http://ec2-18-144-1-16.us-west-1.compute.amazonaws.com:3000/api/v1/events').then(payload=>{
+    axios.get('https://ec2-18-144-1-16.us-west-1.compute.amazonaws.com:3000/api/v1/events').then(payload=>{
 
       let events = payload.data.response;
 
