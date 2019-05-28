@@ -15,7 +15,7 @@ import moment from 'moment'
 Vue.mixin({
   filters:{
     formatDateHeading(eventsHeadingDate){
-      return moment(eventsHeadingDate).format('MMMM D, YYYY')
+      return moment(eventsHeadingDate.split('T')[0]).format('MMMM D, YYYY')
     }
   }
 });

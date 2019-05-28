@@ -36,29 +36,23 @@ export default {
     var axios = window.axios; // Stops ESlint warning - I defined on window via main.js
     axios.get('https://ec2-18-144-1-16.us-west-1.compute.amazonaws.com/api/v1/events').then(payload=>{
 
-      let events = payload.data.response;
+      const today = moment().format('YYYY-MM-DD');
 
-      let events_GroupedByDate_Obj = {}
-      
-      let mapDatesToObj = (e)=>{
-        if(!events_GroupedByDate_Obj.hasOwnProperty(e.start_date)){
-          events_GroupedByDate_Obj[e.start_date] = []
+      let events = payload.data.response;
+      let events_GroupedByDate_Obj = {};
+
+      events.forEach(event=>{
+        let start_date = event.start_date.split('T')[0];
+        if(moment(start_date).isBefore(today)){
+          start_date = today;
+          event.start_date = today;
         }
-        events_GroupedByDate_Obj[e.start_date].push(e)
-      }
-      
-      events.forEach(e=>{
-        if(!moment(e.start_date).isBefore(moment().format('YYYY-MM-DD'))){ // Don't show any start_dates that already have passed
-          mapDatesToObj(e);
+        if(!events_GroupedByDate_Obj[start_date]){
+          events_GroupedByDate_Obj[start_date] = [];
+          events_GroupedByDate_Obj[start_date].push(event);
         }
-        else {
-          // Check if the events with start_dates that have already passed have active / on-going end_dates
-          if(e.end_date !== 0 || e.end_date !== e.start_date){
-            if(moment(e.end_date).isAfter(moment().format('YYYY-MM-DD'))){
-              e.start_date = moment().format('YYYY-MM-DD'); // Set the start_date for today
-              mapDatesToObj(e);
-            }
-          }
+        else{
+          events_GroupedByDate_Obj[start_date].push(event);
         }
       });
 
