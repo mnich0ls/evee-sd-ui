@@ -32,7 +32,7 @@ export default {
   },
   created(){
     var axios = window.axios; // Stops ESlint warning - I defined on window via main.js
-    axios.get('https://ec2-18-144-1-16.us-west-1.compute.amazonaws.com/api/v1/events').then(payload=>{
+    axios.get('https://api.evee-sd.com/api/v1/events').then(payload=>{
 
       const today = moment().format('YYYY-MM-DD');
 
