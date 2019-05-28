@@ -1,19 +1,17 @@
 <template>
   <v-container fluid grid-list-xl>
     <v-layout row wrap>
-      <v-flex class="lg12 md12 sm12 xs12" v-for="(event,key,index) in events" :key="index">
-        <v-layout class="mt-4" row wrap>        
-          <v-flex>
-            <p class="title">{{key | formatDateHeading}}</p>
+      <!-- <v-flex class="lg12 md12 sm12 xs12"> -->
+        <template v-for="(event,index) in events">
+          <v-flex v-if="event.type === 'header'" class="mt-4 xs12" :key="index">
+            <p class="title">{{event.date | formatDateHeading}}</p>
             <hr>
           </v-flex>
-        </v-layout>
-        <v-layout row wrap>
-          <v-flex class="lg3 md4 sm6 xs12" v-for="(individualEvent,dailyIndex) in event" :key="dailyIndex">
-            <event-card :event="individualEvent"></event-card>
+          <v-flex v-else class="lg3 md4 sm6 xs12" :key="index">
+            <event-card :event="event"></event-card>
           </v-flex>
-        </v-layout>        
-      </v-flex>    
+        </template>  
+      <!-- </v-flex> -->
     </v-layout>
   </v-container>
 </template>
@@ -27,7 +25,7 @@ import EventCard from './EventCard.vue'
 export default {
   name: 'EventsContainer',
   data: () => ({
-    events: {}
+    events: []
   }),
   components: {
     EventCard
@@ -39,25 +37,34 @@ export default {
       const today = moment().format('YYYY-MM-DD');
 
       let events = payload.data.response;
-      let events_GroupedByDate_Obj = {};
+      let current_date = events[0].start_date.split('T')[0];
 
+      if (this.events.length < 1) {
+        let event = {
+          type: 'header'
+        }
+        if (moment(current_date).isBefore(today)) {
+          event.date = today
+        } else {
+          event.date = current_date
+        }
+        this.events.push(event)
+      }
       events.forEach(event=>{
         let start_date = event.start_date.split('T')[0];
+        let next_date = start_date;
+        if (moment(current_date).isBefore(next_date)) {
+          this.events.push({
+            type: 'header',
+            date: next_date
+          })
+          current_date = next_date;
+        }
         if(moment(start_date).isBefore(today)){
-          start_date = today;
           event.start_date = today;
         }
-        if(!events_GroupedByDate_Obj[start_date]){
-          events_GroupedByDate_Obj[start_date] = [];
-          events_GroupedByDate_Obj[start_date].push(event);
-        }
-        else{
-          events_GroupedByDate_Obj[start_date].push(event);
-        }
+        this.events.push(event);
       });
-
-      this.events = events_GroupedByDate_Obj;
-
     });
 
   }
