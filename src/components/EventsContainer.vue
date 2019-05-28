@@ -62,12 +62,7 @@ export default {
         }
       });
 
-      let events_OrderedByDate_Obj = {}
-      Object.keys(events_GroupedByDate_Obj).sort().forEach(function(key) {
-        events_OrderedByDate_Obj[key] = events_GroupedByDate_Obj[key]
-      });
-
-      this.events = events_OrderedByDate_Obj
+      this.events = events_GroupedByDate_Obj;
 
     });
 
