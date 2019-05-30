@@ -30,21 +30,45 @@
           </v-layout>
           <v-layout row wrap>
             <v-flex xs12>
-              <v-combobox
-              :items="categories"
-              label="Filter by category"
-              :multiple="true"
-              :clearable="true">
-              </v-combobox>
-            </v-flex>
-          </v-layout><v-layout row wrap>
-            <v-flex xs12>
-              <v-combobox
-              :items="locations"
-              label="Filter by location"
-              :multiple="true"
-              :clearable="true">
-              </v-combobox>
+              <v-list>
+                  <v-list-group no-action>
+                  <template v-slot:activator>
+                      <v-list-tile>
+                          <v-list-content>
+                              <v-list-tile-title>Categories</v-list-tile-title>
+                          </v-list-content>
+                      </v-list-tile>
+                  </template>
+                  <v-list-tile v-for="category in categories" :key="category">
+                      <v-list-tile-action>
+                            <v-checkbox v-model="category.selected"></v-checkbox>
+                        </v-list-tile-action>
+                      <v-list-tile-content @click.prevent="category.selected = !category.selected">
+                          <v-list-tile-title>{{ category.title }}</v-list-tile-title>
+                      </v-list-tile-content>
+                      <v-list-tile-action>
+                          <v-icon>expand-more</v-icon>
+                      </v-list-tile-action>
+                  </v-list-tile>
+                </v-list-group>
+                <!-- <v-list-group no-action>
+                  <template v-slot:activator>
+                      <v-list-tile>
+                          <v-list-content>
+                              <v-list-tile-title>Locations</v-list-tile-title>
+                          </v-list-content>
+                      </v-list-tile>
+                  </template>
+                  <v-list-tile v-for="location in locations" :key="location">
+                      <v-list-tile-content>
+                          <v-list-tile-title>{{ location }}</v-list-tile-title>
+                      </v-list-tile-content>
+                      <v-list-tile-action>
+                          <v-icon>expand-more</v-icon>
+                      </v-list-tile-action>
+                  </v-list-tile>
+                </v-list-group> -->
+              </v-list>
             </v-flex>
           </v-layout>
           <v-layout row wrap> 
@@ -66,19 +90,43 @@ import EventBus from '../plugins/event-bus.js'
             paid: true,
             date: moment().format('YYYY-MM-DD'),
             categories: [
-                'Music',
-                'Meetup',
-                'Beer',
-                'Wine',
-                'Food',
-                'Boat',
-                'Family',
-                'Learning',
-                'Community',
-                'Science',
-                'Trivia',
-                'Volunteer'
+                {
+                    title: 'Music',
+                    selected: false
+                },
+                {
+                    title: 'Meetup',
+                    selected: false
+                },
+                {
+                    title: 'Food',
+                    selected: false
+                },
+                {
+                    title: 'Drinks',
+                    selected: false
+                },
+                {
+                    title: 'Science',
+                    selected: false
+                },
+                {
+                    title: 'Tech',
+                    selected: false
+                },
+                // 'Meetup',
+                // 'Beer',
+                // 'Wine',
+                // 'Food',
+                // 'Boat',
+                // 'Family',
+                // 'Learning',
+                // 'Community',
+                // 'Science',
+                // 'Trivia',
+                // 'Volunteer'
             ],
+            selectedCategories: {},
             locations: [
                 'Downtown',
                 'Point Loma',
@@ -92,7 +140,8 @@ import EventBus from '../plugins/event-bus.js'
                 'South County - Inland',
                 'South County - Inland',
                 'East County'
-            ]
+            ],
+            selectedLocations: {}
         }),
         created() {
             EventBus.$on('toggleDrawer', this.toggleDrawer);
