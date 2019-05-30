@@ -31,12 +31,8 @@ export default {
     EventCard,
     InfiniteLoading
   },
-  created(){
-    console.log('created');
-  },
   methods: {
     infiniteHandler($state) {
-      console.log('loading more events')
         var axios = window.axios; // Stops ESlint warning - I defined on window via main.js
         axios.get('https://api.evee-sd.com/api/v1/events?page=' + this.page++).then(payload=>{
 
