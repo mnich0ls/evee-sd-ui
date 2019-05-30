@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import './plugins/vuetify'
 import App from './App.vue'
+import VueAnalytics from 'vue-analytics'
+
+Vue.use(VueAnalytics, {
+  id: 'UA-126242187-3'
+});
 
 // Load UI icon pack extras
 import '@fortawesome/fontawesome-free/css/all.min.css'
@@ -8,8 +13,6 @@ import '@fortawesome/fontawesome-free/css/all.min.css'
 // Load XHR client tools
 import axios from 'axios'
 window.axios = axios
-window.EventBus = new Vue();
-
 
 import moment from 'moment'
 

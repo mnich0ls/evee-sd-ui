@@ -19,6 +19,7 @@
 import AppDrawer from './components/AppDrawer.vue'
 import EventsContainer from './components/EventsContainer.vue'
 import EventBus from './plugins/event-bus.js'
+import { page } from 'vue-analytics'
 
 export default {
   name: 'app',
@@ -29,7 +30,13 @@ export default {
   data: () => ({
       showDrawer: false,
   }),
+  mounted() {
+    this.track()
+  },
   methods: {
+    track() {
+      page('/')
+    },
     toggleDrawer() {
       EventBus.$emit('toggleDrawer');
     }
