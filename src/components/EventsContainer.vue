@@ -52,32 +52,29 @@ export default {
 
           let events = payload.data.response;
           if (!events.length) {
-            $state.complete();
+            $state.complete()
           } else {
             let current_date = events[0].start_date.split('T')[0];
+            if (moment(current_date).isBefore(today)) {
+                current_date = today
+            }
             if (this.events.length < 1) {
-              let event = {
-                type: 'header'
-              }
-              if (moment(current_date).isBefore(today)) {
-                event.date = today
-              } else {
-                event.date = current_date
-              }
-              this.events.push(event)
+              // set the first date header if this is the first page of events
+              this.events.push({
+                type: 'header',
+                date: current_date
+              })
             }
             events.forEach(event=>{
-              let start_date = event.start_date.split('T')[0];
-              let next_date = start_date;
-              if (moment(current_date).isBefore(next_date)) {
+              let next_date = event.start_date.split('T')[0];
+              if (moment(next_date).isAfter(current_date)) {
                 this.events.push({
                   type: 'header',
                   date: next_date
                 })
                 current_date = next_date;
-              }
-              if(moment(start_date).isBefore(today)){
-                event.start_date = today;
+              } else if (moment(next_date).isBefore(current_date)) {
+                event.start_date = current_date
               }
               this.events.push(event);
             });
