@@ -205,6 +205,8 @@ import EventBus from '../plugins/event-bus.js'
                     }
                 })
                 // console.log('locations:', locations.join(', '));
+                this.$store.commit('setSearch', this.search)
+                EventBus.$emit('filter')
                 this.toggleDrawer()
             }
         }
