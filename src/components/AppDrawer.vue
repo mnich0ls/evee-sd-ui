@@ -99,15 +99,27 @@ import EventBus from '../plugins/event-bus.js'
             date: moment().format('YYYY-MM-DD'),
             categories: [
                 {
-                    title: 'Music',
+                    title: 'Activities',
                     selected: false
                 },
                 {
-                    title: 'Meetup',
+                    title: 'Adventure',
                     selected: false
                 },
                 {
-                    title: 'Food',
+                    title: 'Art',
+                    selected: false
+                },
+                {
+                    title: 'Attractions',
+                    selected: false
+                },
+                {
+                    title: 'Business',
+                    selected: false
+                },
+                {
+                    title: 'Community',
                     selected: false
                 },
                 {
@@ -115,7 +127,51 @@ import EventBus from '../plugins/event-bus.js'
                     selected: false
                 },
                 {
-                    title: 'Science',
+                    title: 'Festivals',
+                    selected: false
+                },
+                {
+                    title: 'Fitness',
+                    selected: false
+                },
+                {
+                    title: 'Food',
+                    selected: false
+                },
+                {
+                    title: 'Health',
+                    selected: false
+                },
+                {
+                    title: 'Hobbies',
+                    selected: false
+                },
+                {
+                    title: 'Learning',
+                    selected: false
+                },
+                {
+                    title: 'Lifestyle',
+                    selected: false
+                },
+                {
+                    title: 'Music',
+                    selected: false
+                },
+                {
+                    title: 'Nightclubs',
+                    selected: false
+                },
+                {
+                    title: 'Skill Development',
+                    selected: false
+                },
+                {
+                    title: 'Socializing',
+                    selected: false
+                },
+                {
+                    title: 'Sports',
                     selected: false
                 },
                 {
@@ -123,26 +179,58 @@ import EventBus from '../plugins/event-bus.js'
                     selected: false
                 },
                 {
-                    title: 'Volunteering',
+                    title: 'Theater',
                     selected: false
                 }
             ],
             selectedCategories: {},
             locations: [
                 {
+                    title: 'Balboa Park',
+                    selected: false
+                },
+                {
+                    title: 'Cardiff',
+                    selected: false
+                },
+                {
+                    title: 'Carlsbad',
+                    selected: false
+                },
+                {
+                    title: 'Chula Vista',
+                    selected: false
+                },
+                {
+                    title: 'Citywide',
+                    selected: false
+                },
+                {
+                    title: 'Coronado',
+                    selected: false
+                },
+                {
+                    title: 'Del Mar',
+                    selected: false
+                },
+                {
                     title: 'Downtown',
                     selected: false
                 },
                 {
-                    title: 'Point Loma',
+                    title: 'East County',
                     selected: false
                 },
                 {
-                    title: 'East Villiage',
+                    title: 'El Cajon',
                     selected: false
                 },
                 {
-                    title: 'Balboa Park',
+                    title: 'Encinitas',
+                    selected: false
+                },
+                {
+                    title: 'Gaslamp Quarter',
                     selected: false
                 },
                 {
@@ -150,33 +238,33 @@ import EventBus from '../plugins/event-bus.js'
                     selected: false
                 },
                 {
-                    title: 'Nort Park',
-                    selected: false
-                },
-                {
-                    title: 'Normal Heights',
-                    selected: false
-                },
-                {
-                    title: 'North - Coastal',
-                    selected: false
-                },
-                {
-                    title: 'North - Inland',
-                    selected: false
-                },
-                {
-                    title: 'South - Coastal',
-                    selected: false
-                },
-                {
-                    title: 'South - Inland',
-                    selected: false
-                },
-                {
-                    title: 'East County',
+                    title: 'Imperial Beach',
                     selected: false
                 }
+/*La Jolla
+La Mesa
+Lemon Grove
+Little Italy
+Mira Mesa
+Miramar
+Mission Bay
+Mission Valley
+National City
+North Coastal
+North Inland
+North Park
+Oceanside
+Pacific Beach
+Point Loma
+Poway
+Rancho Santa Fe
+San Diego
+Santee
+Solana Beach 
+South Park
+South Bay
+Spring Valley
+Tijuana */
             ],
             selectedLocations: {}
         }),
@@ -197,6 +285,7 @@ import EventBus from '../plugins/event-bus.js'
                         categories.push(c.title)
                     }
                 })
+                this.$store.commit('setCategories', categories)
                 // console.log('categories:', categories.join(', '));
                 let locations = [];
                 this.locations.forEach((l) => {

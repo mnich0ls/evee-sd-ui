@@ -11,11 +11,15 @@ Vue.use(VueAnalytics, {
 Vue.use(Vuex)
 let store = new Vuex.Store({
   state: {
-    search: null
+    search: null,
+    categories: []
   },
   mutations: { 
     setSearch(state, search) {
       state.search = search
+    },
+    setCategories(state, categories) {
+      state.categories = categories
     }
   }
 })

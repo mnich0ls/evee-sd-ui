@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <v-app id="inspire">
-      <v-toolbar color="blue darken-2" dark fixed app>
+      <v-toolbar color="blue darken-4" dark fixed app>
         <v-toolbar-side-icon @click="toggleDrawer"></v-toolbar-side-icon>
         <v-toolbar-title class="app-title">
           <v-icon color="white" class="far fa-calendar-alt mb-1"></v-icon> EveeSD

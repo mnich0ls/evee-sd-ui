@@ -27,6 +27,7 @@ import EventBus from '../plugins/event-bus.js'
 export default {
   name: 'EventsContainer',
   data: () => ({
+    eventsApiBaseUrl: '',
     events: [],
     page: 1,
     filterId: 1
@@ -37,14 +38,17 @@ export default {
   },
   created() {
     EventBus.$on('filter', this.applyFilter)
+    this.eventsApiBaseUrl = process.env.VUE_APP_EVENTS_API_BASE_URL
+    // console.log('configured events API URL', this.eventsApiBaseUrl)
   },
   methods: {
     infiniteHandler($state) {
         var axios = window.axios; // Stops ESlint warning - I defined on window via main.js
-        axios.get('https://api.evee-sd.com/api/v1/events', {
+        axios.get(this.eventsApiBaseUrl, {
           params: {
             page: this.page++,
-            search: this.$store.state.search
+            search: this.$store.state.search,
+            categories: this.$store.state.categories
           }
         }).then(payload=>{
 
