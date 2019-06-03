@@ -12,8 +12,8 @@
         </template>  
     </v-layout>
     <infinite-loading :identifier="filterId" @infinite="infiniteHandler">
-      <div slot="no-more"><a href="mailto:mike@evee-sd.com?subject=Events I'm looking for">Pleae send us an email and let us know what kind of events are you looking for.</a></div>
-      <div slot="no-results">Sorry, we couldn't find anything for you :( <br><a href="mailto:mike@evee-sd.com?subject=Events I'm looking for">Please send us an email and let us know more about the kind of events you are looking for.</a></div>
+      <div slot="no-more"><a href="mailto:mike@evee-sd.com?subject=Events I'm looking for">Looking for something specific? Let us know.</a></div>
+      <div slot="no-results">Sorry, we couldn't find anything for you :( <br><a href="mailto:mike@evee-sd.com?subject=Events I'm looking for">Let us know what you're looking for.</a></div>
     </infinite-loading>
   </v-container>
 </template>
