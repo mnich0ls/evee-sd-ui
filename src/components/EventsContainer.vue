@@ -84,7 +84,10 @@ export default {
           if (!events.length) {
             $state.complete()
             if (!this.events.length && this.$store.state.search) {
-              this.$ga.event('Events', 'Search', 'No Resulsts', this.$store.state.search)
+              this.$ga.event({
+                eventCategory: 'No results',
+                eventAction: this.$store.state.search
+              })
               // console.log('no results...', this.$store.state.search)
             }
           } else {

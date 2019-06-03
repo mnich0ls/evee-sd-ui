@@ -378,19 +378,35 @@ import EventBus from '../plugins/event-bus.js'
                 // console.log('locations:', locations.join(', '));
                 EventBus.$emit('filter')
                 if (this.search) {
-                    this.$ga.event('Events', 'Filter', 'Search', this.search)
+                    // console.log('search', this.search, this.$ga, this.$ga.event)
+                    this.$ga.event({
+                        eventCategory: 'Search',
+                        eventAction: this.search,
+                    })
                 }
                 if (this.price) {
-                    this.$ga.event('Events', 'Filter', 'Price', this.price)
+                    this.$ga.event({
+                        eventCategory: 'Filter Price',
+                        eventAction: this.price,
+                    })
                 }
                 if (this.date) {
-                    this.$ga.event('Events', 'Filter', 'Date', this.date)
+                    this.$ga.event({
+                        eventCategory: 'Filter Date',
+                        eventAction: this.date
+                    })
                 }
                 if (categories.length) {
-                    this.$ga.event('Events', 'Filter', 'Categories', categories.join(', '))
+                    this.$ga.event({
+                        eventCategory: 'Filter Categories',
+                        eventAction: categories.join(', ')
+                    })
                 }
                 if (locations.length) {
-                    this.$ga.event('Events', 'Filter', 'Locations', locations.join(', '))
+                    this.$ga.event({
+                        eventCategory: 'Filter Locations',
+                        eventAction: locations.join(', ')
+                    })
                 }
             }
         },

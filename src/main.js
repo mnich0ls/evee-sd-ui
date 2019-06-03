@@ -5,7 +5,8 @@ import VueAnalytics from 'vue-analytics'
 import Vuex from 'vuex'
 
 Vue.use(VueAnalytics, {
-  id: 'UA-126242187-3'
+  id: 'UA-126242187-3',
+  trackEvent: true
 })
 
 Vue.use(Vuex)
