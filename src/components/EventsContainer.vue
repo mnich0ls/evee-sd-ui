@@ -31,7 +31,24 @@ export default {
     eventsApiBaseUrl: '',
     events: [],
     page: 1,
-    filterId: 1
+    filterId: 1,
+    stockImages: [
+      'https://cdn.pixabay.com/photo/2017/09/23/10/45/usa-2778354__480.jpg',
+      'https://cdn.pixabay.com/photo/2018/06/15/10/35/map-3476638__480.jpg',
+      'https://cdn.pixabay.com/photo/2014/03/22/14/05/balboa-park-292588__480.jpg',
+      'https://cdn.pixabay.com/photo/2017/09/22/21/23/usa-2777092__480.jpg',
+      'https://cdn.pixabay.com/photo/2016/07/11/06/00/sunset-1509132__480.jpg',
+      'https://cdn.pixabay.com/photo/2010/12/17/10/46/skyline-3731__480.jpg',
+      'https://cdn.pixabay.com/photo/2015/05/29/21/35/city-789822__480.jpg',
+      'https://cdn.pixabay.com/photo/2010/12/17/10/45/evening-3726__480.jpg',
+      'https://cdn.pixabay.com/photo/2016/09/30/14/55/sunset-1705524__480.jpg',
+      'https://cdn.pixabay.com/photo/2015/04/28/02/01/san-diego-bay-742904__480.jpg',
+      'https://cdn.pixabay.com/photo/2013/02/25/16/15/san-diego-86036__480.jpg',
+      'https://cdn.pixabay.com/photo/2016/07/02/00/38/sunset-1492219__480.jpg',
+      'https://cdn.pixabay.com/photo/2014/07/27/17/21/balboa-park-403067__480.jpg',
+      'https://cdn.pixabay.com/photo/2017/02/24/18/04/san-diego-2095778__480.jpg',
+      'https://cdn.pixabay.com/photo/2016/07/23/20/13/panorama-1537475__480.jpg'
+  ]
   }),
   components: {
     EventCard,
@@ -88,6 +105,9 @@ export default {
                 current_date = next_date;
               } else if (moment(next_date).isBefore(current_date)) {
                 event.start_date = current_date
+              }
+              if (event.thumbnail_url === "https://i.imgur.com/yIPRLMg.jpg") {
+                event.thumbnail_url = this.stockImages[Math.floor(Math.random() * this.stockImages.length)]
               }
               this.events.push(event);
             });
