@@ -83,6 +83,10 @@ export default {
           let events = payload.data.response;
           if (!events.length) {
             $state.complete()
+            if (!this.events.length && this.$store.state.search) {
+              this.$ga.event('Events', 'Search', 'No Resulsts', this.$store.state.search)
+              // console.log('no results...', this.$store.state.search)
+            }
           } else {
             let current_date = events[0].start_date.split('T')[0];
             if (moment(current_date).isBefore(date)) {

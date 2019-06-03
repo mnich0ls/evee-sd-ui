@@ -377,6 +377,21 @@ import EventBus from '../plugins/event-bus.js'
                 this.$store.commit('setLocations', locations)
                 // console.log('locations:', locations.join(', '));
                 EventBus.$emit('filter')
+                if (this.search) {
+                    this.$ga.event('Events', 'Filter', 'Search', this.search)
+                }
+                if (this.price) {
+                    this.$ga.event('Events', 'Filter', 'Price', this.price)
+                }
+                if (this.date) {
+                    this.$ga.event('Events', 'Filter', 'Date', this.date)
+                }
+                if (categories.length) {
+                    this.$ga.event('Events', 'Filter', 'Categories', categories.join(', '))
+                }
+                if (locations.length) {
+                    this.$ga.event('Events', 'Filter', 'Locations', locations.join(', '))
+                }
             }
         },
         watch : {
