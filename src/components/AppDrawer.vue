@@ -8,8 +8,12 @@
         <v-layout row wrap>
           <v-flex xs12>
             <v-text-field
-            v-model="search"
-              label="Search">
+                v-model="search"
+                clearable
+                append-icon="search"
+                label="Search"
+                @keyup.enter="toggleDrawer"
+                autofocus>
             </v-text-field>
           </v-flex>
         </v-layout>
@@ -80,7 +84,12 @@
             </v-flex>
           </v-layout>
           <v-layout row wrap> 
-              <v-btn block class="mt-3" color="primary" @click="findEvents">Find Events</v-btn>
+              <v-btn block class="mt-3" color="primary" @click="toggleDrawer">Find Events</v-btn>
+          </v-layout>
+          <v-layout mt-3 row wrap>
+            <v-flex xs12 class="text-xs-center">
+                <a href="mailto:mike@evee-sd.com?subject=Feedback">Have feedback?</a>
+            </v-flex>
           </v-layout>
       </v-container>
     </v-navigation-drawer>
@@ -240,31 +249,99 @@ import EventBus from '../plugins/event-bus.js'
                 {
                     title: 'Imperial Beach',
                     selected: false
+                },
+                {
+                    title: 'La Jolla',
+                    selected: false
+                },
+                {
+                    title: 'La Mesa',
+                    selected: false
+                },
+                {
+                    title: 'Lemon Grove',
+                    selected: false
+                },
+                {
+                    title: 'Little Italy',
+                    selected: false
+                },
+                {
+                    title: 'Mira Mesa',
+                    selected: false
+                },
+                {
+                    title: 'Miramar',
+                    selected: false
+                },
+                {
+                    title: 'Mission Bay',
+                    selected: false
+                },
+                {
+                    title: 'Mission Valley',
+                    selected: false
+                },
+                {
+                    title: 'National City',
+                    selected: false
+                },
+                {
+                    title: 'North Coastal',
+                    selected: false
+                },
+                {
+                    title: 'North Inland',
+                    selected: false
+                },
+                {
+                    title: 'North Park',
+                    selected: false
+                },
+                {
+                    title: 'Oceanside',
+                    selected: false
+                },
+                {
+                    title: 'Pacific Beach',
+                    selected: false
+                },
+                {
+                    title: 'Point Loma',
+                    selected: false
+                },
+                {
+                    title: 'Poway',
+                    selected: false
+                },
+                {
+                    title: 'Rancho Santa Fe',
+                    selected: false
+                },
+                {
+                    title: 'Santee',
+                    selected: false
+                },
+                {
+                    title: 'Solana Beach',
+                    selected: false
+                },
+                {
+                    title: 'South Park',
+                    selected: false
+                },
+                {
+                    title: 'South Bay',
+                    selected: false
+                },
+                {
+                    title: 'Spring Valley',
+                    selected: false
+                },
+                {
+                    title: 'Tijuana',
+                    selected: false
                 }
-/*La Jolla
-La Mesa
-Lemon Grove
-Little Italy
-Mira Mesa
-Miramar
-Mission Bay
-Mission Valley
-National City
-North Coastal
-North Inland
-North Park
-Oceanside
-Pacific Beach
-Point Loma
-Poway
-Rancho Santa Fe
-San Diego
-Santee
-Solana Beach 
-South Park
-South Bay
-Spring Valley
-Tijuana */
             ],
             selectedLocations: {}
         }),
@@ -273,9 +350,13 @@ Tijuana */
         },
         methods: {
             toggleDrawer() {
-                this.showDrawer = !this.showDrawer;
+                this.showDrawer = !this.showDrawer
             },
             findEvents() {
+                this.$store.commit('setSearch', this.search)
+                this.$store.commit('setPrice', this.price)
+                // console.log('date:', this.date)
+                this.$store.commit('setDate', this.date)
                 // console.log('search:', this.search)
                 // console.log('price:', this.price)
                 // console.log('date:', this.date)
@@ -293,10 +374,18 @@ Tijuana */
                         locations.push(l.title)
                     }
                 })
+                this.$store.commit('setLocations', locations)
                 // console.log('locations:', locations.join(', '));
-                this.$store.commit('setSearch', this.search)
                 EventBus.$emit('filter')
-                this.toggleDrawer()
+            }
+        },
+        watch : {
+            showDrawer: function (val) {
+                // if drawer is closing - trigger filter 
+                // todo: ideally this is only triggered if filters were updated
+                if (!val) {
+                    this.findEvents();
+                }
             }
         }
     }

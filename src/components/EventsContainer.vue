@@ -12,7 +12,8 @@
         </template>  
     </v-layout>
     <infinite-loading :identifier="filterId" @infinite="infiniteHandler">
-      <div slot="no-more"><a href="mailto:mike@evee-sd.com">What kind of events are you looking for?</a></div>
+      <div slot="no-more"><a href="mailto:mike@evee-sd.com?subject=Events I'm looking for">Pleae send us an email and let us know what kind of events are you looking for.</a></div>
+      <div slot="no-results">Sorry, we couldn't find anything for you :( <br><a href="mailto:mike@evee-sd.com?subject=Events I'm looking for">Please send us an email and let us know more about the kind of events you are looking for.</a></div>
     </infinite-loading>
   </v-container>
 </template>
@@ -43,24 +44,32 @@ export default {
   },
   methods: {
     infiniteHandler($state) {
+      // console.log('fetching events...')
         var axios = window.axios; // Stops ESlint warning - I defined on window via main.js
         axios.get(this.eventsApiBaseUrl, {
           params: {
             page: this.page++,
             search: this.$store.state.search,
-            categories: this.$store.state.categories
+            price: this.$store.state.price,
+            date: this.$store.state.date,
+            categories: this.$store.state.categories,
+            locations: this.$store.state.locations
           }
         }).then(payload=>{
-
-          const today = moment().format('YYYY-MM-DD');
+          // console.log('received events..')
+          let date = moment().format('YYYY-MM-DD')
+          let filterDate = this.$store.state.date
+          if (filterDate && moment(filterDate).isAfter(date)) {
+            date = filterDate
+          }
 
           let events = payload.data.response;
           if (!events.length) {
             $state.complete()
           } else {
             let current_date = events[0].start_date.split('T')[0];
-            if (moment(current_date).isBefore(today)) {
-                current_date = today
+            if (moment(current_date).isBefore(date)) {
+                current_date = date
             }
             if (this.events.length < 1) {
               // set the first date header if this is the first page of events

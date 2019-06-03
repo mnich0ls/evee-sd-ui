@@ -12,14 +12,26 @@ Vue.use(Vuex)
 let store = new Vuex.Store({
   state: {
     search: null,
-    categories: []
+    price: 'either',
+    date: null,
+    categories: [],
+    locations: []
   },
   mutations: { 
     setSearch(state, search) {
       state.search = search
     },
+    setPrice(state, price) {
+      state.price = price
+    },
+    setDate(state, date) {
+      state.date = date
+    },
     setCategories(state, categories) {
       state.categories = categories
+    },
+    setLocations(state, locations) {
+      state.locations = locations
     }
   }
 })
@@ -36,7 +48,10 @@ import moment from 'moment'
 Vue.mixin({
   filters:{
     formatDateHeading(eventsHeadingDate){
-      return moment(eventsHeadingDate.split('T')[0]).format('MMMM D, YYYY')
+      return moment(eventsHeadingDate.split('T')[0]).format('dddd, MMMM D, YYYY')
+    },
+    formatEventCardDate(eventCardDate){
+      return moment(eventCardDate.split('T')[0]).format('ddd, MMMM D')
     }
   }
 });
