@@ -113,7 +113,7 @@ export default {
               } else if (moment(next_date).isBefore(current_date)) {
                 event.start_date = current_date
               }
-              if (event.thumbnail_url === "https://i.imgur.com/yIPRLMg.jpg") {
+              if (!event.thumbnail_url || event.thumbnail_url === '' || event.thumbnail_url === "https://i.imgur.com/yIPRLMg.jpg" || event.thumbnail_url === "https://secure.meetupstatic.com") {
                 event.thumbnail_url = this.stockImages[Math.floor(Math.random() * this.stockImages.length)]
               }
               this.events.push(event);

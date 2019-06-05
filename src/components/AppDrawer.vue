@@ -32,13 +32,37 @@
                 </v-btn-toggle>
             </v-flex>
           </v-layout>
-          <v-layout mb-3 row wrap>
-            <v-date-picker
-              v-model="date">
-            </v-date-picker>
-          </v-layout>
-          <v-layout row wrap>
-            <v-flex xs12>
+          <v-layout row wrap mb-3>
+               <v-autocomplete
+                    v-model="selectedCategories"
+                    :items="categories"
+                    item-text="title"
+                    :multiple="true"
+                    cache-items
+                    xs12
+                    flat
+                    hide-no-data
+                    hide-details
+                    clearable
+                    label="Categories"
+                ></v-autocomplete>
+            </v-layout>
+            <v-layout row wrap mb-3>
+                <v-autocomplete
+                    v-model="selectedLocations"
+                    :items="locations"
+                    :multiple="true"
+                    item-text="title"
+                    cache-items
+                    xs12
+                    flat
+                    hide-no-data
+                    hide-details
+                    clearable
+                    label="Location"
+                ></v-autocomplete>
+            </v-layout>
+            <!-- <v-flex xs12>
               <v-list>
                   <v-list-group no-action>
                   <template v-slot:activator>
@@ -81,7 +105,11 @@
                   </v-list-tile>
                 </v-list-group>
               </v-list>
-            </v-flex>
+            </v-flex> -->
+          <v-layout mb-3 row wrap>
+            <v-date-picker
+              v-model="date">
+            </v-date-picker>
           </v-layout>
           <v-layout row wrap> 
               <v-btn block class="mt-3" color="primary" @click="toggleDrawer">Find Events</v-btn>
@@ -192,7 +220,7 @@ import EventBus from '../plugins/event-bus.js'
                     selected: false
                 }
             ],
-            selectedCategories: {},
+            selectedCategories: null,
             locations: [
                 {
                     title: 'Balboa Park',
@@ -343,7 +371,7 @@ import EventBus from '../plugins/event-bus.js'
                     selected: false
                 }
             ],
-            selectedLocations: {}
+            selectedLocations: null
         }),
         created() {
             EventBus.$on('toggleDrawer', this.toggleDrawer);
@@ -360,22 +388,10 @@ import EventBus from '../plugins/event-bus.js'
                 // console.log('search:', this.search)
                 // console.log('price:', this.price)
                 // console.log('date:', this.date)
-                let categories = [];
-                this.categories.forEach((c)=>{
-                    if (c.selected) {
-                        categories.push(c.title)
-                    }
-                })
-                this.$store.commit('setCategories', categories)
-                // console.log('categories:', categories.join(', '));
-                let locations = [];
-                this.locations.forEach((l) => {
-                    if (l.selected) {
-                        locations.push(l.title)
-                    }
-                })
-                this.$store.commit('setLocations', locations)
-                // console.log('locations:', locations.join(', '));
+                // console.log('categories:', this.selectedCategories)
+                this.$store.commit('setCategories', this.selectedCategories)
+                this.$store.commit('setLocations', this.selectedLocations)
+                // console.log('locations:', this.selectedLocations.join(', '));
                 EventBus.$emit('filter')
                 if (this.search) {
                     // console.log('search', this.search, this.$ga, this.$ga.event)
@@ -396,16 +412,16 @@ import EventBus from '../plugins/event-bus.js'
                         eventAction: this.date
                     })
                 }
-                if (categories.length) {
+                if (this.selectedCategories.length) {
                     this.$ga.event({
                         eventCategory: 'Filter Categories',
-                        eventAction: categories.join(', ')
+                        eventAction: this.selectedCategories.join(', ')
                     })
                 }
-                if (locations.length) {
+                if (this.selectedLocations.length) {
                     this.$ga.event({
                         eventCategory: 'Filter Locations',
-                        eventAction: locations.join(', ')
+                        eventAction: this.selectedLocations.join(', ')
                     })
                 }
             }
