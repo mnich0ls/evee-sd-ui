@@ -126,6 +126,7 @@
 <script>
 import moment from 'moment'
 import EventBus from '../plugins/event-bus.js'
+import _ from 'lodash'
 
     export default {
         name: 'AppDrawer',
@@ -376,6 +377,63 @@ import EventBus from '../plugins/event-bus.js'
         created() {
             EventBus.$on('toggleDrawer', this.toggleDrawer);
         },
+        watch : {
+            showDrawer: function (val) {
+                // if drawer is closing - trigger filter 
+                // todo: ideally this is only triggered if filters were updated
+                if (!val) {
+                    console.log('close menu')
+                       this.$ga.event({
+                        eventCategory: 'Filter Menu',
+                        eventAction: 'Close Menu'
+                    })
+                    this.findEvents();
+                } else {
+                    console.log('open menu')
+                       this.$ga.event({
+                        eventCategory: 'Filter Menu',
+                        eventAction: 'Open Menu'
+                    })
+                }
+            },
+            search: _.debounce(function(val) {
+                console.log('searh term typed', val)
+                   this.$ga.event({
+                        eventCategory: 'Filter Menu',
+                        eventAction: 'Search Term Typed'
+                    })
+            }, 1000),
+            price: function(val) {
+                console.log('price updated', val)
+                   this.$ga.event({
+                        eventCategory: 'Filter Menu',
+                        eventAction: 'Price Selected: ' + val
+                    })
+            },
+            date: function(val) {
+                console.log('date selected', val)
+                   this.$ga.event({
+                        eventCategory: 'Filter Menu',
+                        eventAction: 'Date Selected'
+                    })
+            },
+            selectedCategories: function(val) {
+                console.log('categories selected', val)
+                   this.$ga.event({
+                        eventCategory: 'Filter Menu',
+                        eventAction: 'Categories Selected',
+                        eventValue: this.selectedCategories.length
+                    })
+            },
+            selectedLocations: function(val) {
+                console.log('selected locations', val)
+                   this.$ga.event({
+                        eventCategory: 'Filter Menu',
+                        eventAction: 'Locations Selected',
+                        eventValue: this.selectedLocations.length
+                    })
+            }
+        },
         methods: {
             toggleDrawer() {
                 this.showDrawer = !this.showDrawer
@@ -383,56 +441,10 @@ import EventBus from '../plugins/event-bus.js'
             findEvents() {
                 this.$store.commit('setSearch', this.search)
                 this.$store.commit('setPrice', this.price)
-                // console.log('date:', this.date)
                 this.$store.commit('setDate', this.date)
-                // console.log('search:', this.search)
-                // console.log('price:', this.price)
-                // console.log('date:', this.date)
-                // console.log('categories:', this.selectedCategories)
                 this.$store.commit('setCategories', this.selectedCategories)
                 this.$store.commit('setLocations', this.selectedLocations)
-                // console.log('locations:', this.selectedLocations.join(', '));
                 EventBus.$emit('filter')
-                if (this.search) {
-                    // console.log('search', this.search, this.$ga, this.$ga.event)
-                    this.$ga.event({
-                        eventCategory: 'Search',
-                        eventAction: this.search,
-                    })
-                }
-                if (this.price) {
-                    this.$ga.event({
-                        eventCategory: 'Filter Price',
-                        eventAction: this.price,
-                    })
-                }
-                if (this.date) {
-                    this.$ga.event({
-                        eventCategory: 'Filter Date',
-                        eventAction: this.date
-                    })
-                }
-                if (this.selectedCategories.length) {
-                    this.$ga.event({
-                        eventCategory: 'Filter Categories',
-                        eventAction: this.selectedCategories.join(', ')
-                    })
-                }
-                if (this.selectedLocations.length) {
-                    this.$ga.event({
-                        eventCategory: 'Filter Locations',
-                        eventAction: this.selectedLocations.join(', ')
-                    })
-                }
-            }
-        },
-        watch : {
-            showDrawer: function (val) {
-                // if drawer is closing - trigger filter 
-                // todo: ideally this is only triggered if filters were updated
-                if (!val) {
-                    this.findEvents();
-                }
             }
         }
     }
