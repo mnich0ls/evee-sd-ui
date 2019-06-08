@@ -11,7 +11,7 @@
                 v-model="search"
                 clearable
                 append-icon="search"
-                label="Search"
+                label="Search by event name"
                 @keyup.enter="toggleDrawer"
                 autofocus>
             </v-text-field>
@@ -111,9 +111,9 @@
               v-model="date">
             </v-date-picker>
           </v-layout>
-          <v-layout row wrap> 
+          <!-- <v-layout row wrap> 
               <v-btn block class="mt-3" color="primary" @click="toggleDrawer">Find Events</v-btn>
-          </v-layout>
+          </v-layout> -->
           <v-layout mt-3 row wrap>
             <v-flex xs12 class="text-xs-center">
                 <a href="mailto:mike@evee-sd.com?subject=Feedback">Have feedback?</a>
@@ -382,14 +382,13 @@ import _ from 'lodash'
                 // if drawer is closing - trigger filter 
                 // todo: ideally this is only triggered if filters were updated
                 if (!val) {
-                    console.log('close menu')
+                    // console.log('close menu')
                        this.$ga.event({
                         eventCategory: 'Filter Menu',
                         eventAction: 'Close Menu'
                     })
-                    this.findEvents();
                 } else {
-                    console.log('open menu')
+                    // console.log('open menu')
                        this.$ga.event({
                         eventCategory: 'Filter Menu',
                         eventAction: 'Open Menu'
@@ -397,41 +396,51 @@ import _ from 'lodash'
                 }
             },
             search: _.debounce(function(val) {
-                console.log('searh term typed', val)
+                // console.log('searh term typed', val)
+                this.$store.commit('setSearch', val)
                    this.$ga.event({
                         eventCategory: 'Filter Menu',
                         eventAction: 'Search Term Typed'
                     })
+                    this.findEvents();
             }, 1000),
             price: function(val) {
-                console.log('price updated', val)
-                   this.$ga.event({
-                        eventCategory: 'Filter Menu',
-                        eventAction: 'Price Selected: ' + val
-                    })
+                this.$store.commit('setPrice', val)
+                // console.log('price updated', val)
+                this.$ga.event({
+                    eventCategory: 'Filter Menu',
+                    eventAction: 'Price Selected: ' + val
+                })
+                this.findEvents();
             },
             date: function(val) {
-                console.log('date selected', val)
-                   this.$ga.event({
-                        eventCategory: 'Filter Menu',
-                        eventAction: 'Date Selected'
-                    })
+                this.$store.commit('setDate', val)
+                // console.log('date selected', val)
+                this.$ga.event({
+                    eventCategory: 'Filter Menu',
+                    eventAction: 'Date Selected'
+                })
+                this.findEvents();
             },
             selectedCategories: function(val) {
-                console.log('categories selected', val)
-                   this.$ga.event({
-                        eventCategory: 'Filter Menu',
-                        eventAction: 'Categories Selected',
-                        eventValue: this.selectedCategories.length
-                    })
+                this.$store.commit('setCategories', val)
+                // console.log('categories selected', val)
+                this.$ga.event({
+                    eventCategory: 'Filter Menu',
+                    eventAction: 'Categories Selected',
+                    eventValue: val.length
+                })
+                this.findEvents();
             },
             selectedLocations: function(val) {
-                console.log('selected locations', val)
+                this.$store.commit('setLocations', val)
+                // console.log('selected locations', val)
                    this.$ga.event({
                         eventCategory: 'Filter Menu',
                         eventAction: 'Locations Selected',
-                        eventValue: this.selectedLocations.length
+                        eventValue: val.length
                     })
+                    this.findEvents();
             }
         },
         methods: {
@@ -439,11 +448,6 @@ import _ from 'lodash'
                 this.showDrawer = !this.showDrawer
             },
             findEvents() {
-                this.$store.commit('setSearch', this.search)
-                this.$store.commit('setPrice', this.price)
-                this.$store.commit('setDate', this.date)
-                this.$store.commit('setCategories', this.selectedCategories)
-                this.$store.commit('setLocations', this.selectedLocations)
                 EventBus.$emit('filter')
             }
         }
