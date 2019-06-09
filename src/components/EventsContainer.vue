@@ -62,65 +62,72 @@ export default {
   methods: {
     infiniteHandler($state) {
       // console.log('fetching events...')
-        var axios = window.axios; // Stops ESlint warning - I defined on window via main.js
-        axios.get(this.eventsApiBaseUrl, {
-          params: {
-            page: this.page++,
-            search: this.$store.state.search,
-            price: this.$store.state.price,
-            date: this.$store.state.date,
-            categories: this.$store.state.categories,
-            locations: this.$store.state.locations
-          }
-        }).then(payload=>{
-          // console.log('received events..')
-          let date = moment().format('YYYY-MM-DD')
-          let filterDate = this.$store.state.date
-          if (filterDate && moment(filterDate).isAfter(date)) {
-            date = filterDate
-          }
+      if (this.page > 1) {
+        // console.log('Load More')
+        this.$ga.event({
+          eventCategory: 'Event List',
+          eventAction: 'Loaded More'
+        })
+      }
+      var axios = window.axios; // Stops ESlint warning - I defined on window via main.js
+      axios.get(this.eventsApiBaseUrl, {
+        params: {
+          page: this.page++,
+          search: this.$store.state.search,
+          price: this.$store.state.price,
+          date: this.$store.state.date,
+          categories: this.$store.state.categories,
+          locations: this.$store.state.locations
+        }
+      }).then(payload=>{
+        // console.log('received events..')
+        let date = moment().format('YYYY-MM-DD')
+        let filterDate = this.$store.state.date
+        if (filterDate && moment(filterDate).isAfter(date)) {
+          date = filterDate
+        }
 
-          let events = payload.data.response;
-          if (!events.length) {
-            $state.complete()
-            if (!this.events.length && this.$store.state.search) {
-              this.$ga.event({
-                eventCategory: 'No results',
-                eventAction: this.$store.state.search
-              })
-              // console.log('no results...', this.$store.state.search)
-            }
-          } else {
-            let current_date = events[0].start_date.split('T')[0];
-            if (moment(current_date).isBefore(date)) {
-                current_date = date
-            }
-            if (this.events.length < 1) {
-              // set the first date header if this is the first page of events
+        let events = payload.data.response;
+        if (!events.length) {
+          $state.complete()
+          if (this.events.length < 1) {
+            // console.log('No Results')
+            this.$ga.event({
+              eventCategory: 'Event List',
+              eventAction: 'No Results'
+            })
+          }
+        } else {
+          let current_date = events[0].start_date.split('T')[0];
+          if (moment(current_date).isBefore(date)) {
+              current_date = date
+          }
+          if (this.events.length < 1) {
+            // set the first date header if this is the first page of events
+            this.events.push({
+              type: 'header',
+              date: current_date
+            })
+          }
+          events.forEach(event=>{
+            let next_date = event.start_date.split('T')[0];
+            if (moment(next_date).isAfter(current_date)) {
               this.events.push({
                 type: 'header',
-                date: current_date
+                date: next_date
               })
+              current_date = next_date;
+            } else if (moment(next_date).isBefore(current_date)) {
+              event.start_date = current_date
             }
-            events.forEach(event=>{
-              let next_date = event.start_date.split('T')[0];
-              if (moment(next_date).isAfter(current_date)) {
-                this.events.push({
-                  type: 'header',
-                  date: next_date
-                })
-                current_date = next_date;
-              } else if (moment(next_date).isBefore(current_date)) {
-                event.start_date = current_date
-              }
-              if (!event.thumbnail_url || event.thumbnail_url === '' || event.thumbnail_url === "https://i.imgur.com/yIPRLMg.jpg" || event.thumbnail_url === "https://secure.meetupstatic.com") {
-                event.thumbnail_url = this.stockImages[Math.floor(Math.random() * this.stockImages.length)]
-              }
-              this.events.push(event);
-            });
-            $state.loaded(); 
-          }
-        });
+            if (!event.thumbnail_url || event.thumbnail_url === '' || event.thumbnail_url === "https://i.imgur.com/yIPRLMg.jpg" || event.thumbnail_url === "https://secure.meetupstatic.com") {
+              event.thumbnail_url = this.stockImages[Math.floor(Math.random() * this.stockImages.length)]
+            }
+            this.events.push(event);
+          });
+          $state.loaded(); 
+        }
+      });
     },
     applyFilter() {
       this.page = 1

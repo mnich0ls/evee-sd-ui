@@ -1,5 +1,5 @@
  <template>
-    <a :href="event.details_url" target="_blank">
+    <a @click="cardClicked" :href="event.details_url" target="_blank">
         <v-card height="100%">
             <v-img
             :src="event.thumbnail_url"
@@ -30,6 +30,15 @@ export default {
   name: 'EventCard',
   props: {
       event
+  },
+  methods: {
+      cardClicked() {
+        //   console.log('Event Clicked')
+          this.$ga.event({
+              eventCategory: "Event List",
+              eventAction: "Event Clicked"
+          })
+      }
   }
 }
 </script>
