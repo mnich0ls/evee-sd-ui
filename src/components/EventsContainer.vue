@@ -120,6 +120,7 @@ export default {
             } else if (moment(next_date).isBefore(current_date)) {
               event.start_date = current_date
             }
+            // todo - remove the check for https://secure.meetupstatic.com - this was a bug that was resolved on 6/13/19 and live on 6/14/19
             if (!event.thumbnail_url || event.thumbnail_url === '' || event.thumbnail_url === "https://i.imgur.com/yIPRLMg.jpg" || event.thumbnail_url === "https://secure.meetupstatic.com") {
               event.thumbnail_url = this.stockImages[Math.floor(Math.random() * this.stockImages.length)]
             }
