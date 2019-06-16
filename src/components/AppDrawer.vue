@@ -135,92 +135,72 @@ import _ from 'lodash'
             search: null,
             price: 'either',
             date: moment().format('YYYY-MM-DD'),
-            categories: [
-                {
-                    title: 'Activities',
-                    selected: false
-                },
-                {
-                    title: 'Adventure',
-                    selected: false
-                },
-                {
-                    title: 'Art',
-                    selected: false
-                },
-                {
-                    title: 'Attractions',
-                    selected: false
-                },
-                {
-                    title: 'Business',
-                    selected: false
-                },
-                {
-                    title: 'Community',
-                    selected: false
-                },
-                {
-                    title: 'Drinks',
-                    selected: false
-                },
-                {
-                    title: 'Festivals',
-                    selected: false
-                },
-                {
-                    title: 'Fitness',
-                    selected: false
-                },
-                {
-                    title: 'Food',
-                    selected: false
-                },
-                {
-                    title: 'Health',
-                    selected: false
-                },
-                {
-                    title: 'Hobbies',
-                    selected: false
-                },
-                {
-                    title: 'Learning',
-                    selected: false
-                },
-                {
-                    title: 'Lifestyle',
-                    selected: false
-                },
-                {
-                    title: 'Music',
-                    selected: false
-                },
-                {
-                    title: 'Nightclubs',
-                    selected: false
-                },
-                {
-                    title: 'Skill Development',
-                    selected: false
-                },
-                {
-                    title: 'Socializing',
-                    selected: false
-                },
-                {
-                    title: 'Sports',
-                    selected: false
-                },
-                {
-                    title: 'Tech',
-                    selected: false
-                },
-                {
-                    title: 'Theater',
-                    selected: false
-                }
-            ],
+            categories: [ { title: 'Activities', selected: false },
+                { title: 'Animals', selected: false },
+                { title: 'Art', selected: false },
+                { title: 'Associations & Organizations', selected: false },
+                { title: 'Attractions', selected: false },
+                { title: 'Bars', selected: false },
+                { title: 'Beer', selected: false },
+                { title: 'Biking', selected: false },
+                { title: 'Boating & Sailing', selected: false },
+                { title: 'Book Clubs', selected: false },
+                { title: 'Book Signings', selected: false },
+                { title: 'Business', selected: false },
+                { title: 'Cars & Motorcycles', selected: false },
+                { title: 'Charity & Causes', selected: false },
+                { title: 'Classes & Workshops', selected: false },
+                { title: 'Comedy', selected: false },
+                { title: 'Community', selected: false },
+                { title: 'Dancing', selected: false },
+                { title: 'Discussion Groups', selected: false },
+                { title: 'Education & Learning', selected: false },
+                { title: 'Farmers\' Markets', selected: false },
+                { title: 'Fashion', selected: false },
+                { title: 'Festivals', selected: false },
+                { title: 'Film', selected: false },
+                { title: 'Fishing', selected: false },
+                { title: 'Fitness', selected: false },
+                { title: 'Food & Drink', selected: false },
+                { title: 'For Kids', selected: false },
+                { title: 'Fundraisers', selected: false },
+                { title: 'Funk', selected: false },
+                { title: 'Galleries & Museums', selected: false },
+                { title: 'Games', selected: false },
+                { title: 'Golf', selected: false },
+                { title: 'Government', selected: false },
+                { title: 'Health', selected: false },
+                { title: 'History & Heritage', selected: false },
+                { title: 'Hobbies', selected: false },
+                { title: 'Holidays', selected: false },
+                { title: 'Home & Lifestyle', selected: false },
+                { title: 'Hotels & Resorts', selected: false },
+                { title: 'Language & Ethnic Identity', selected: false },
+                { title: 'Lectures', selected: false },
+                { title: 'Lifestyle', selected: false },
+                { title: 'Movements & Politics', selected: false },
+                { title: 'Music', selected: false },
+                { title: 'Nature', selected: false },
+                { title: 'Nightclubs', selected: false },
+                { title: 'Outdoors & Adventure', selected: false },
+                { title: 'Parents & Family', selected: false },
+                { title: 'Parks & Gardens', selected: false },
+                { title: 'Photography', selected: false },
+                { title: 'Religion & Beliefs', selected: false },
+                { title: 'Science & Tech', selected: false },
+                { title: 'Spirituality', selected: false },
+                { title: 'Sports', selected: false },
+                { title: 'Support', selected: false },
+                { title: 'Surfing', selected: false },
+                { title: 'Team Building', selected: false },
+                { title: 'Theater', selected: false },
+                { title: 'Tours & Sightseeing', selected: false },
+                { title: 'Travel Guides', selected: false },
+                { title: 'Trivia & Games', selected: false },
+                { title: 'Uncategorized', selected: false },
+                { title: 'Wellness', selected: false },
+                { title: 'Wine', selected: false },
+                { title: 'Writing', selected: false } ],
             selectedCategories: null,
             locations: [
                 {
